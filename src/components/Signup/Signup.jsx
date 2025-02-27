@@ -54,7 +54,7 @@ let formik=useFormik({
 })
   return (
   <>
-  <div className="container mx-auto py-3">
+  <div className="container mx-auto py-3 min-h-screen">
 
   {apiError ?
    <div className="flex items-center p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400 my-3" role="alert">
