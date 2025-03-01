@@ -1,23 +1,25 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState ,useContext} from 'react'
 import Style from './ProductDetails.module.css'
 import { data, useParams } from 'react-router-dom'
 import axios from 'axios';
 import  { Component } from "react";
 import Slider from "react-slick";
 // import { baseUrl } from "./config";
-
+import { CartContext } from '../../Context/CartContext';
+import { toast } from 'react-toastify';
+import { WishListContext } from '../../Context/WishListContext';
 
 export default function ProductDetails() {
   const [response, setResponse] = useState("")
   let [category, setCategory] = useState([])
   let {id,categories}=useParams() 
-
+  let { addProductToCart, getProductFromCart } = useContext(CartContext);
+    let { addToWishlist, deleteToWishlist,getAllWish } = useContext(WishListContext);
   const settings = {
     customPaging: function(i) {
       return (
 
         <a className='w-96' >
-        {/* تكرار الصور داخل النقاط */}
         <img
           src={`${response?.images[i]}`}
           key={i}
@@ -26,11 +28,10 @@ export default function ProductDetails() {
         />
       </a>
 
-      //   <a>
-      //   {/* {response?.images.map((src)=><img src={src} key={src} alt="Product" className="w-3/5  rounded object-cover mx-auto" />)} */}
+    
         
 
-      // </a>
+      
       );
     },
     dots: true,
@@ -71,6 +72,30 @@ export default function ProductDetails() {
       console.error("Error fetching data:", error);
     })
   }
+
+
+  async function addProduct(id) {
+    let response = await addProductToCart(id);
+    if (response.data.status === 'success') {
+      toast.success(response.data.message,options);
+      getProductFromCart()
+      } else {
+      toast.success(response.data.message);
+    }
+  }
+  const options = {
+    autoClose: 2000,
+       theme: 'dark'  
+};
+let [favorites, setFavorites] = useState({});
+  async function addWish(id) {
+    let response = await addToWishlist(id);
+    if (response.data.status === 'success') {
+      setFavorites((prev) => ({ ...prev, [id]: true }));    
+      toast.success(response.data.message,options);
+    }
+  }
+
 
   useEffect(() => {
     getProductDetails(id) 
@@ -137,8 +162,8 @@ export default function ProductDetails() {
                 </div>
               </div>
               <div className="flex gap-4 mt-12 max-w-md">
-                <button type="button" className="w-full  dark:text-white px-4 py-2.5 outline-none border border-emerald-600 bg-emerald-500 hover:bg-emerald-700 text-white text-sm font-semibold rounded">Buy now</button>
-                <button type="button" className="w-full dark:text-white px-4 py-2.5 outline-none border border-emerald-600 bg-transparent hover:bg-emerald-700 hover:text-white text-gray-800 text-sm font-semibold rounded">Add to cart</button>
+                <button    onClick={() => addProduct(response.id)} type="button" className="w-full  dark:text-white px-4 py-2.5 outline-none border border-emerald-600 bg-emerald-500 hover:bg-emerald-700 text-white text-sm font-semibold rounded">Add to cart</button>
+                <button onClick={() => ( addWish(response.id))}  type="button" className="w-full dark:text-white px-4 py-2.5 outline-none border border-emerald-600 bg-transparent hover:bg-emerald-700 hover:text-white text-gray-800 text-sm font-semibold rounded">Add to Wish List</button>
               </div>
             </div>
           </div>
