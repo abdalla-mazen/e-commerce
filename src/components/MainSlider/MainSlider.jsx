@@ -5,6 +5,7 @@ import Slider from "react-slick";
 import { useEffect } from 'react';
 
 export default function MainSlider() {
+
   const [categories, setCategories] = useState([])
   async function getCategories() {
     try {
@@ -78,5 +79,11 @@ export default function MainSlider() {
       </div>
 
     </>
+
+
+ 
+
+ 
+
   )
 }

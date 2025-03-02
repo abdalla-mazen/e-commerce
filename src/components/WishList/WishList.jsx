@@ -90,7 +90,6 @@ const [list, setlist] = useState([])
    <>
   <div  className='min-h-screen'>
 
-
   { list.map((listt)=><div key={listt.id} href="#" className="flex  flex-col items-center m-5  justify-between bg-white border border-gray-200 rounded-lg shadow-sm md:flex-row  my-5 hover:bg-gray-100 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700">
  <div className='flex justify-around flex-col  sm:flex-row '>
   <img className="object-cover w-full rounded-t-lg h-96 md:h-auto md:w-48 md:rounded-none md:rounded-s-lg" src={listt.imageCover}  />
